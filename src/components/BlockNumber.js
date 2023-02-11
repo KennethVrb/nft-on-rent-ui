@@ -40,7 +40,7 @@ function Main(props) {
 
   return (
     <Grid.Column>
-      <Card>
+      <Card fluid>
         <Card.Content textAlign="center">
           <Statistic
             className="block_number"
