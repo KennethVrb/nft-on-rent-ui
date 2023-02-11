@@ -8,6 +8,7 @@ import NodeInfo from './NodeInfo'
 import TemplateModule from './TemplateModule'
 import Transfer from './Transfer'
 import Upgrade from './Upgrade'
+import Inventory from './Inventory'
 
 export {
   AccountSelector,
@@ -20,4 +21,5 @@ export {
   TemplateModule,
   Transfer,
   Upgrade,
+  Inventory,
 }

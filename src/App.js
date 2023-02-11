@@ -19,6 +19,7 @@ import {
   Interactor,
   Metadata,
   NodeInfo,
+  Inventory,
 } from './components'
 
 function Main() {
@@ -71,6 +72,9 @@ function Main() {
           <Grid.Row>
             <Interactor />
             <Events />
+          </Grid.Row>
+          <Grid.Row>
+            <Inventory />
           </Grid.Row>
         </Grid>
       </Container>
