@@ -64,7 +64,7 @@ export default function Inventory({
         </div>
       </h2>
       <Container>
-        <Grid columns={4} stretched>
+        <Grid columns={4}>
           {[...ownedCollectibles, ...rentedCollectibles].map(collectible => (
             <InventoryItem
               key={collectible.uniqueId}
