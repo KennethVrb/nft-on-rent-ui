@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Container, Grid, Icon } from 'semantic-ui-react'
+import { Button, Grid, Icon } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 
 import InventoryItem from './InventoryItem'
@@ -63,21 +63,20 @@ export default function Inventory({
           </Button>
         </div>
       </h2>
-      <Container>
-        <Grid columns={4}>
-          {[...ownedCollectibles, ...rentedCollectibles].map(collectible => (
-            <InventoryItem
-              key={collectible.uniqueId}
-              collectible={collectible}
-              getCollectibles={getCollectibles}
-              equippedCollectibles={equippedCollectibles}
-              getEquippedCollectibles={getEquippedCollectibles}
-              getSignInfo={getSignInfo}
-              rented={collectible.lessee === currentAccount.address}
-            ></InventoryItem>
-          ))}
-        </Grid>
-      </Container>
+
+      <Grid columns={4} stretched>
+        {[...ownedCollectibles, ...rentedCollectibles].map(collectible => (
+          <InventoryItem
+            key={collectible.uniqueId}
+            collectible={collectible}
+            getCollectibles={getCollectibles}
+            equippedCollectibles={equippedCollectibles}
+            getEquippedCollectibles={getEquippedCollectibles}
+            getSignInfo={getSignInfo}
+            rented={collectible.lessee === currentAccount.address}
+          ></InventoryItem>
+        ))}
+      </Grid>
     </Grid.Column>
   )
 }

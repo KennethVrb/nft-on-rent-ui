@@ -59,9 +59,8 @@ function Main() {
             <BlockNumber />
             <BlockNumber finalized />
           </Grid.Row>
-          <Grid.Row>
-            <Character />
-          </Grid.Row>
+
+          <Character />
         </Grid>
       </Container>
       <DeveloperConsole />

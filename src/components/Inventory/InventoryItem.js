@@ -1,7 +1,8 @@
-import { Button, Card, Grid } from 'semantic-ui-react'
+import { Card, Grid } from 'semantic-ui-react'
 import DeleteItem from './DeleteItem'
 import EquipItem from './EquipItem'
 import ToggleRecurring from './ToggleRecurring'
+import ToggleRentable from './ToggleRentable'
 
 export default function InventoryItem({
   collectible,
@@ -40,7 +41,6 @@ export default function InventoryItem({
           <span style={{ display: 'block' }}>
             Price Per Block: {collectible.pricePerBlock}
           </span>
-          <span>&nbsp;</span>
         </>
       )}
     </>
@@ -68,11 +68,11 @@ export default function InventoryItem({
             )}
           </Card.Meta>
           <Card.Description>{collectible.uniqueId}</Card.Description>
+          <Card.Meta style={{ marginTop: '1rem' }}>{information}</Card.Meta>
         </Card.Content>
         <Card.Content extra>
           <div>
             <Grid columns={1}>
-              <Grid.Column>{information}</Grid.Column>
               <Grid.Column>
                 <div
                   style={{
@@ -83,21 +83,21 @@ export default function InventoryItem({
                   }}
                 >
                   {!rented && (
-                    <Button
-                      basic
-                      color={collectible.rentable ? 'red' : 'green'}
-                      style={{ marginTop: '0.5rem' }}
-                    >
-                      {collectible.rentable ? 'Stop Renting Out' : 'Rent Out'}
-                    </Button>
+                    <ToggleRentable
+                      collectible={collectible}
+                      getCollectibles={getCollectibles}
+                      getSignInfo={getSignInfo}
+                    ></ToggleRentable>
                   )}
-                  <EquipItem
-                    collectible={collectible}
-                    equippedCollectibles={equippedCollectibles}
-                    getEquippedCollectibles={getEquippedCollectibles}
-                    getSignInfo={getSignInfo}
-                    style={{ marginTop: '0.5rem' }}
-                  ></EquipItem>
+                  {(rented || !collectible.rentable) && (
+                    <EquipItem
+                      collectible={collectible}
+                      equippedCollectibles={equippedCollectibles}
+                      getEquippedCollectibles={getEquippedCollectibles}
+                      getSignInfo={getSignInfo}
+                      style={{ marginTop: '0.5rem' }}
+                    ></EquipItem>
+                  )}
                 </div>
               </Grid.Column>
             </Grid>

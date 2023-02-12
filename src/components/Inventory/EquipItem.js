@@ -59,8 +59,7 @@ export default function EquipItem({
 
   return (
     <Button
-      basic
-      color={equipped ? 'red' : 'green'}
+      color={equipped ? 'red' : 'blue'}
       disabled={loading}
       loading={loading}
       onClick={equipped ? onUnequipItem : onEquipItem}

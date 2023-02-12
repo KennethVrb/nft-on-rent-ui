@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Grid } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 import Inventory from '../Inventory'
+import RentableItems from '../RentableItems'
 
 export default function Character() {
   const { api, currentAccount } = useSubstrateState()
@@ -13,10 +14,8 @@ export default function Character() {
   const getCollectibles = async () => {
     const result = await api.query.palletRent.collectibles.entries()
     if (result.isEmpty) return
-    const colectibles = result.map(collectableResult =>
-      JSON.parse(collectableResult[1].toString())
-    )
-    setCollectibles(colectibles)
+    const collectibles = result.map(result => JSON.parse(result[1].toString()))
+    setCollectibles(collectibles)
   }
 
   const getEquippedCollectibles = async () => {
@@ -68,18 +67,23 @@ export default function Character() {
   }, [api.derive.chain])
 
   return (
-    <Grid.Column width={16}>
+    <>
       <Grid.Row>
-        <Grid.Column width={16}>
-          <Inventory
-            collectibles={collectibles}
-            getCollectibles={getCollectibles}
-            equippedCollectibles={equippedCollectibles}
-            getEquippedCollectibles={getEquippedCollectibles}
-            getSignInfo={getSignInfo}
-          ></Inventory>
-        </Grid.Column>
+        <Inventory
+          collectibles={collectibles}
+          getCollectibles={getCollectibles}
+          equippedCollectibles={equippedCollectibles}
+          getEquippedCollectibles={getEquippedCollectibles}
+          getSignInfo={getSignInfo}
+        ></Inventory>
       </Grid.Row>
-    </Grid.Column>
+      <Grid.Row>
+        <RentableItems
+          getCollectibles={getCollectibles}
+          blockNumber={blockNumber}
+          getSignInfo={getSignInfo}
+        ></RentableItems>
+      </Grid.Row>
+    </>
   )
 }
