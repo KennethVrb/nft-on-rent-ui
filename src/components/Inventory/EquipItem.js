@@ -1,44 +1,72 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 
 export default function EquipItem({
-  collectable,
-  getCollectables,
+  collectible,
+  equippedCollectibles,
+  getEquippedCollectibles,
   getSignInfo,
+  style,
 }) {
   const { api } = useSubstrateState()
 
-  const [equipping, setEquipping] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [equipped, setEquipped] = useState(false)
 
   const onEquipItem = async () => {
-    setEquipping(true)
+    setLoading(true)
 
     const signInfo = await getSignInfo()
 
     api.tx.palletRent
-      .equipCollectible(collectable.uniqueId)
+      .equipCollectible(collectible.uniqueId)
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
-          getCollectables()
-          setEquipping(false)
+          getEquippedCollectibles()
+          setLoading(false)
         }
       })
       .catch(e => {
         console.log(e)
-        setEquipping(false)
+        setLoading(false)
       })
   }
+
+  const onUnequipItem = async () => {
+    setLoading(true)
+
+    const signInfo = await getSignInfo()
+
+    api.tx.palletRent
+      .unequipCollectible(collectible.uniqueId)
+      .signAndSend(...signInfo, ({ status }) => {
+        if (status.isInBlock) {
+          getEquippedCollectibles()
+          setLoading(false)
+        }
+      })
+      .catch(e => {
+        console.log(e)
+        setLoading(false)
+      })
+  }
+
+  useEffect(
+    () => setEquipped(equippedCollectibles.includes(collectible.uniqueId)),
+    [equippedCollectibles, collectible.uniqueId]
+  )
 
   return (
     <Button
       basic
-      color="green"
-      disabled={equipping}
-      loading={equipping}
-      onClick={onEquipItem}
+      color={equipped ? 'red' : 'green'}
+      disabled={loading}
+      loading={loading}
+      onClick={equipped ? onUnequipItem : onEquipItem}
+      style={style}
     >
-      Equip
+      {equipped ? 'Unequip' : 'Equip'}
     </Button>
   )
 }

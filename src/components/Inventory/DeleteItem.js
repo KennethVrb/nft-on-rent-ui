@@ -3,8 +3,8 @@ import { Button, Icon } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 
 export default function DeleteItem({
-  collectable,
-  getCollectables,
+  collectible,
+  getCollectibles,
   getSignInfo,
 }) {
   const { api } = useSubstrateState()
@@ -17,11 +17,11 @@ export default function DeleteItem({
     const signInfo = await getSignInfo()
 
     api.tx.palletRent
-      .burn(collectable.uniqueId)
+      .burn(collectible.uniqueId)
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
-          getCollectables()
           setDeleting(false)
+          getCollectibles()
         }
       })
       .catch(e => {
@@ -36,6 +36,7 @@ export default function DeleteItem({
       loading={deleting}
       basic
       color="red"
+      size="mini"
       icon
       onClick={onDeleteItem}
     >

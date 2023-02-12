@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 
-export default function CreateItem({ getCollectables, getSignInfo }) {
+export default function CreateItem({ getCollectibles, getSignInfo }) {
   const { api } = useSubstrateState()
 
   const [creating, setCreating] = useState(false)
@@ -16,8 +16,8 @@ export default function CreateItem({ getCollectables, getSignInfo }) {
       .mint()
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
-          getCollectables()
           setCreating(false)
+          getCollectibles()
         }
       })
       .catch(e => {
