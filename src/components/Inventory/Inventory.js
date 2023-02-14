@@ -4,6 +4,7 @@ import { useSubstrateState } from '../../substrate-lib'
 
 import InventoryItem from './InventoryItem'
 import CreateItem from './CreateItem'
+import { createRandomId } from '../../utils'
 
 import './styles.css'
 
@@ -67,7 +68,7 @@ export default function Inventory({
       <Grid columns={4} stretched>
         {[...ownedCollectibles, ...rentedCollectibles].map(collectible => (
           <InventoryItem
-            key={collectible.uniqueId}
+            key={createRandomId()}
             collectible={collectible}
             getCollectibles={getCollectibles}
             equippedCollectibles={equippedCollectibles}
