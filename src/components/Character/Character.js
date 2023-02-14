@@ -77,7 +77,7 @@ export default function Character() {
           getSignInfo={getSignInfo}
         ></Inventory>
       </Grid.Row>
-      <Grid.Row>
+      <Grid.Row style={{ marginTop: '2rem' }}>
         <RentableItems
           getCollectibles={getCollectibles}
           blockNumber={blockNumber}

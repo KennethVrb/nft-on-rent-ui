@@ -59,8 +59,11 @@ function Main() {
             <BlockNumber />
             <BlockNumber finalized />
           </Grid.Row>
-
-          <Character />
+          <Grid.Row>
+            <Grid.Column width={16}>
+              <Character />
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </Container>
       <DeveloperConsole />
