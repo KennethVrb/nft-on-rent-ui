@@ -6,6 +6,8 @@ import InventoryItem from './InventoryItem'
 import CreateItem from './CreateItem'
 
 import './styles.css'
+import { createRandomId } from '../../utils'
+import Item from '../Item'
 
 export default function Inventory({
   collectibles,
@@ -60,6 +62,19 @@ export default function Inventory({
     }
   }
 
+  const getAllItems = () => {
+    const items = [...ownedCollectibles, ...rentedCollectibles]
+    const emptyItemCount = 8 - items.length
+    for (let i = 0; i < emptyItemCount; i++) {
+      items.push({
+        uniqueId: createRandomId(),
+        isPlaceholder: true,
+      })
+    }
+
+    return items
+  }
+
   useEffect(() => {
     if (!collectibles.length) return
 
@@ -99,20 +114,25 @@ export default function Inventory({
       </h2>
 
       <Grid columns={4} stretched>
-        {[...ownedCollectibles, ...rentedCollectibles].map(collectible => (
-          <InventoryItem
-            key={`${collectible.lessor}-${collectible.uniqueId}`}
-            collectible={collectible}
-            rentedOutCollectible={rentedOutCollectibles.find(
-              rentedOutCollectible =>
-                rentedOutCollectible.uniqueId === collectible.uniqueId
+        {getAllItems().map(collectible => (
+          <Grid.Column key={collectible.uniqueId}>
+            {collectible.isPlaceholder ? (
+              <Item></Item>
+            ) : (
+              <InventoryItem
+                collectible={collectible}
+                rentedOutCollectible={rentedOutCollectibles.find(
+                  rentedOutCollectible =>
+                    rentedOutCollectible.uniqueId === collectible.uniqueId
+                )}
+                getCollectibles={getCollectibles}
+                equippedCollectibles={equippedCollectibles}
+                getEquippedCollectibles={getEquippedCollectibles}
+                getSignInfo={getSignInfo}
+                rented={collectible.lessee === currentAccount.address}
+              ></InventoryItem>
             )}
-            getCollectibles={getCollectibles}
-            equippedCollectibles={equippedCollectibles}
-            getEquippedCollectibles={getEquippedCollectibles}
-            getSignInfo={getSignInfo}
-            rented={collectible.lessee === currentAccount.address}
-          ></InventoryItem>
+          </Grid.Column>
         ))}
       </Grid>
     </Grid.Column>

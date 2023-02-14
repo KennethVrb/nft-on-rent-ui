@@ -1,17 +1,18 @@
 import { Card } from 'semantic-ui-react'
 import Rent from './Rent'
+import Item from '../Item'
 
-export default function Item({
+export default function Rentable({
   collectible,
   getCollectibles,
   getRentedCollectibles,
   getSignInfo,
 }) {
   return (
-    <Card>
+    <Item>
       <Card.Content style={{ wordWrap: 'break-word' }}>
         <Card.Description>{collectible.uniqueId}</Card.Description>
-        <Card.Meta style={{ marginTop: '1rem' }}>
+        <Card.Meta style={{ marginTop: '1rem', fontWeight: 'bold' }}>
           <span style={{ display: 'block' }}>
             Rental Period:{' '}
             {collectible.rentable &&
@@ -32,6 +33,6 @@ export default function Item({
           ></Rent>
         </div>
       </Card.Content>
-    </Card>
+    </Item>
   )
 }

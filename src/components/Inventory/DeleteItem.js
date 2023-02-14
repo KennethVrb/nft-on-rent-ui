@@ -34,7 +34,6 @@ export default function DeleteItem({
     <Button
       disabled={deleting}
       loading={deleting}
-      basic
       color="red"
       size="mini"
       icon

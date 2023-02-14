@@ -1,3 +1,3 @@
 export function createRandomId() {
-  return `id-${Math.random().toString(32).slice(2)}`
+  return `id-${Math.random().toString(36).slice(2)}`
 }

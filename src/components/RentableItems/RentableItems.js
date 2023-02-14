@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Button, Grid, Icon } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
-import Item from './Item'
+import { createRandomId } from '../../utils'
+import Item from '../Item'
+import RentableItem from './RentableItem'
 
 export default function RentableItems({
   blockNumber,
@@ -14,7 +16,7 @@ export default function RentableItems({
   const getRentableCollectibles = () => {
     api.query.palletRent.rentableCollectibles(async result => {
       const rentableCollectibleIds = result.toJSON()
-      const newCollectibles = await Promise.all(
+      let rentableCollectibles = await Promise.all(
         rentableCollectibleIds.map(async collectibleId => {
           const collectible = await api.query.palletRent.collectibles(
             collectibleId
@@ -22,14 +24,26 @@ export default function RentableItems({
           return collectible.toJSON()
         })
       )
-      setRentableCollectibles(newCollectibles)
+      rentableCollectibles = rentableCollectibles.filter(
+        collectible =>
+          collectible.lessor !== currentAccount.address &&
+          collectible.lessee !== currentAccount.address
+      )
+      const emptyItemCount = 4 - rentableCollectibles.length
+      for (let i = 0; i < emptyItemCount; i++) {
+        rentableCollectibles.push({
+          uniqueId: createRandomId(),
+          isPlaceholder: true,
+        })
+      }
+      setRentableCollectibles(rentableCollectibles)
     })
   }
 
   useEffect(
     () => !!currentAccount && getRentableCollectibles(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentAccount, blockNumber]
+    [currentAccount]
   )
 
   return (
@@ -41,22 +55,22 @@ export default function RentableItems({
         </Button>
       </h2>
       <Grid columns={4} stretched>
-        {rentableCollectibles
-          .filter(
-            collectible =>
-              collectible.lessor !== currentAccount.address &&
-              collectible.lessee !== currentAccount.address
-          )
-          .map(collectible => (
+        {rentableCollectibles.map(collectible => {
+          return (
             <Grid.Column key={collectible.uniqueId}>
-              <Item
-                collectible={collectible}
-                getRentedCollectibles={getRentableCollectibles}
-                getCollectibles={getCollectibles}
-                getSignInfo={getSignInfo}
-              ></Item>
+              {collectible.isPlaceholder ? (
+                <Item></Item>
+              ) : (
+                <RentableItem
+                  collectible={collectible}
+                  getRentedCollectibles={getRentableCollectibles}
+                  getCollectibles={getCollectibles}
+                  getSignInfo={getSignInfo}
+                ></RentableItem>
+              )}
             </Grid.Column>
-          ))}
+          )
+        })}
       </Grid>
     </Grid.Column>
   )

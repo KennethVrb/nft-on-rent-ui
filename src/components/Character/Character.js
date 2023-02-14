@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Grid } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 import Inventory from '../Inventory'
+import Loadout from '../Loadout'
 import RentableItems from '../RentableItems'
 
 export default function Character() {
@@ -67,8 +68,22 @@ export default function Character() {
   }, [api.derive.chain])
 
   return (
-    <>
+    <div
+      style={{
+        backgroundColor: '#c6c6c6',
+        boxShadow: 'inset 0.2rem 0.2rem #fff, 0.2rem 0.2rem black',
+        padding: '10px',
+        paddingBottom: '30px',
+        border: '2px solid black',
+      }}
+    >
       <Grid.Row>
+        <Loadout
+          equippedCollectibles={equippedCollectibles}
+          getEquippedCollectibes={getEquippedCollectibles}
+        ></Loadout>
+      </Grid.Row>
+      <Grid.Row style={{ marginTop: '2rem' }}>
         <Inventory
           collectibles={collectibles}
           getCollectibles={getCollectibles}
@@ -84,6 +99,6 @@ export default function Character() {
           getSignInfo={getSignInfo}
         ></RentableItems>
       </Grid.Row>
-    </>
+    </div>
   )
 }
