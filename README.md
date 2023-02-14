@@ -14,7 +14,7 @@ This project uses the foundations from the following projects:
 ## Features
 
 This project showcases the ability to create, rent out, rent, destroy, and equip items onto a "character" using the pallet-rent pallet.
-Communication with the `pallet-rent` pallet is done by using the foundations foundations provided by the substrate-front-end-template project which provide easy-to-use interfaces to connect with Substrate nodes and your Polkadot wallet.
+Communication with the `pallet-rent` pallet is done by using the `substrate-front-end-template` modules which provide easy-to-use interfaces to connect with Substrate nodes and your Polkadot wallet.
 
 ## Requirements
 
