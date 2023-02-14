@@ -6,6 +6,7 @@ import ToggleRentable from './ToggleRentable'
 
 export default function InventoryItem({
   collectible,
+  rentedOutCollectible,
   getCollectibles,
   equippedCollectibles,
   getEquippedCollectibles,
@@ -42,6 +43,12 @@ export default function InventoryItem({
             Price Per Block: {collectible.pricePerBlock}
           </span>
         </>
+      )}
+
+      {!!rentedOutCollectible && (
+        <span style={{ display: 'block' }}>
+          Rented Out Until Block: {rentedOutCollectible.nextRentBlock}
+        </span>
       )}
     </>
   )
@@ -92,6 +99,7 @@ export default function InventoryItem({
                   {(rented || !collectible.rentable) && (
                     <EquipItem
                       collectible={collectible}
+                      isRentedOut={!!rentedOutCollectible}
                       equippedCollectibles={equippedCollectibles}
                       getEquippedCollectibles={getEquippedCollectibles}
                       getSignInfo={getSignInfo}

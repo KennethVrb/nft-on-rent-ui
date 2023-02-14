@@ -18,6 +18,7 @@ export default function Inventory({
   const { api, currentAccount } = useSubstrateState()
   const [ownedCollectibles, setOwnedCollectibles] = useState([])
   const [rentedCollectibles, setRentedCollectibles] = useState([])
+  const [rentedOutCollectibles, setRentedOutCollectibles] = useState([])
 
   const getRentedCollectibles = async () => {
     setRentedCollectibles(
@@ -36,6 +37,33 @@ export default function Inventory({
     )
   }
 
+  const getRentedOutCollectibles = () => {
+    api.query.palletRent.lessorCollectibles(
+      currentAccount.address,
+      async result => {
+        const uniqueIds = result.toJSON()
+        if (!uniqueIds.length) {
+          setRentedCollectibles([])
+          return
+        }
+        setRentedOutCollectibles(
+          await Promise.all(
+            uniqueIds.map(async uniqueId => {
+              const result = await api.query.palletRent.lesseeCollectibles(
+                collectibles.find(
+                  collectible => collectible.uniqueId === uniqueId
+                ).lessee,
+                uniqueId
+              )
+              const lesseeCollectible = result.toJSON()
+              return { ...lesseeCollectible, uniqueId }
+            })
+          )
+        )
+      }
+    )
+  }
+
   useEffect(() => {
     if (!collectibles.length) return
 
@@ -47,6 +75,7 @@ export default function Inventory({
     )
 
     getRentedCollectibles()
+    getRentedOutCollectibles()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectibles])
 
@@ -70,6 +99,10 @@ export default function Inventory({
           <InventoryItem
             key={createRandomId()}
             collectible={collectible}
+            rentedOutCollectible={rentedOutCollectibles.find(
+              rentedCollectible =>
+                rentedCollectible.uniqueId === collectible.uniqueId
+            )}
             getCollectibles={getCollectibles}
             equippedCollectibles={equippedCollectibles}
             getEquippedCollectibles={getEquippedCollectibles}

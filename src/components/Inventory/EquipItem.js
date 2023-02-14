@@ -4,6 +4,7 @@ import { useSubstrateState } from '../../substrate-lib'
 
 export default function EquipItem({
   collectible,
+  isRentedOut,
   equippedCollectibles,
   getEquippedCollectibles,
   getSignInfo,
@@ -60,7 +61,7 @@ export default function EquipItem({
   return (
     <Button
       color={equipped ? 'red' : 'blue'}
-      disabled={loading}
+      disabled={loading || isRentedOut}
       loading={loading}
       onClick={equipped ? onUnequipItem : onEquipItem}
       style={style}
