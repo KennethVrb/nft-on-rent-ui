@@ -4,7 +4,6 @@ import { useSubstrateState } from '../../substrate-lib'
 
 import InventoryItem from './InventoryItem'
 import CreateItem from './CreateItem'
-import { createRandomId } from '../../utils'
 
 import './styles.css'
 
@@ -37,31 +36,28 @@ export default function Inventory({
     )
   }
 
-  const getRentedOutCollectibles = () => {
-    api.query.palletRent.lessorCollectibles(
-      currentAccount.address,
-      async result => {
-        const uniqueIds = result.toJSON()
-        if (!uniqueIds.length) {
-          setRentedCollectibles([])
-          return
-        }
-        setRentedOutCollectibles(
-          await Promise.all(
-            uniqueIds.map(async uniqueId => {
-              const result = await api.query.palletRent.lesseeCollectibles(
-                collectibles.find(
-                  collectible => collectible.uniqueId === uniqueId
-                ).lessee,
-                uniqueId
-              )
-              const lesseeCollectible = result.toJSON()
-              return { ...lesseeCollectible, uniqueId }
-            })
-          )
-        )
-      }
+  const getRentedOutCollectibles = async () => {
+    const rentedOutCollectibles = collectibles.filter(
+      collectible =>
+        collectible.lessor === currentAccount.address && collectible.lessee
     )
+
+    if (rentedOutCollectibles.length) {
+      setRentedOutCollectibles(
+        await Promise.all(
+          rentedOutCollectibles.map(async collectible => {
+            const result = await api.query.palletRent.lesseeCollectibles(
+              collectible.lessee,
+              collectible.uniqueId
+            )
+            const lesseeCollectible = result.toJSON()
+            return { ...lesseeCollectible, uniqueId: collectible.uniqueId }
+          })
+        )
+      )
+    } else {
+      setRentedOutCollectibles([])
+    }
   }
 
   useEffect(() => {
@@ -78,6 +74,14 @@ export default function Inventory({
     getRentedOutCollectibles()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectibles])
+
+  useEffect(() => {
+    if (currentAccount) {
+      setOwnedCollectibles([])
+      setRentedCollectibles([])
+      setRentedOutCollectibles([])
+    }
+  }, [currentAccount])
 
   return (
     <Grid.Column width={16}>
@@ -97,11 +101,11 @@ export default function Inventory({
       <Grid columns={4} stretched>
         {[...ownedCollectibles, ...rentedCollectibles].map(collectible => (
           <InventoryItem
-            key={createRandomId()}
+            key={`${collectible.lessor}-${collectible.uniqueId}`}
             collectible={collectible}
             rentedOutCollectible={rentedOutCollectibles.find(
-              rentedCollectible =>
-                rentedCollectible.uniqueId === collectible.uniqueId
+              rentedOutCollectible =>
+                rentedOutCollectible.uniqueId === collectible.uniqueId
             )}
             getCollectibles={getCollectibles}
             equippedCollectibles={equippedCollectibles}
