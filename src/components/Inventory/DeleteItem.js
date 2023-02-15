@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, Icon, Popup } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 
 export default function DeleteItem({
@@ -31,15 +31,20 @@ export default function DeleteItem({
   }
 
   return (
-    <Button
-      disabled={deleting}
-      loading={deleting}
-      color="red"
-      size="mini"
-      icon
-      onClick={onDeleteItem}
-    >
-      <Icon name="trash" />
-    </Button>
+    <Popup
+      content="Delete"
+      trigger={
+        <Button
+          disabled={deleting}
+          loading={deleting}
+          color="red"
+          size="mini"
+          icon
+          onClick={onDeleteItem}
+        >
+          <Icon name="trash" />
+        </Button>
+      }
+    ></Popup>
   )
 }

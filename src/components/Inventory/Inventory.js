@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Grid, Icon } from 'semantic-ui-react'
+import { Button, Grid, Icon, Popup } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 
 import InventoryItem from './InventoryItem'
@@ -107,9 +107,14 @@ export default function Inventory({
             getCollectibles={getCollectibles}
             getSignInfo={getSignInfo}
           ></CreateItem>
-          <Button secondary icon onClick={getCollectibles}>
-            <Icon name="refresh" />
-          </Button>
+          <Popup
+            content="Refresh"
+            trigger={
+              <Button secondary icon onClick={getCollectibles}>
+                <Icon name="refresh" />
+              </Button>
+            }
+          ></Popup>
         </div>
       </h2>
 

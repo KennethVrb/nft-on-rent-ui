@@ -1,9 +1,10 @@
-import { Card, Grid } from 'semantic-ui-react'
+import { Card, Grid, Image } from 'semantic-ui-react'
 import DeleteItem from './DeleteItem'
 import EquipItem from './EquipItem'
 import ToggleRecurring from './ToggleRecurring'
 import ToggleRentable from './ToggleRentable'
 import Item from '../Item'
+import { getImage } from '../../utils'
 
 export default function InventoryItem({
   collectible,
@@ -76,7 +77,20 @@ export default function InventoryItem({
             ></DeleteItem>
           )}
         </Card.Meta>
-        <Card.Description>{collectible.uniqueId}</Card.Description>
+        <Card.Description
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            src={require(`../../assets/items/${getImage(
+              collectible.uniqueId
+            )}`)}
+            style={{ height: '80px' }}
+          ></Image>
+        </Card.Description>
         <Card.Meta style={{ marginTop: '1rem' }}>{information}</Card.Meta>
       </Card.Content>
       <Card.Content extra>

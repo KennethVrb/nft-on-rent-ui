@@ -80,7 +80,9 @@ export default function Character() {
       <Grid.Row>
         <Loadout
           equippedCollectibles={equippedCollectibles}
-          getEquippedCollectibes={getEquippedCollectibles}
+          getCollectibles={getCollectibles}
+          getEquippedCollectibles={getEquippedCollectibles}
+          getSignInfo={getSignInfo}
         ></Loadout>
       </Grid.Row>
       <Grid.Row style={{ marginTop: '2rem' }}>

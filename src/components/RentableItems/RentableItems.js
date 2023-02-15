@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Grid, Icon } from 'semantic-ui-react'
+import { Button, Grid, Icon, Popup } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 import { createRandomId } from '../../utils'
 import Item from '../Item'
@@ -50,9 +50,14 @@ export default function RentableItems({
     <Grid.Column width={16}>
       <h2 style={{ display: 'flex', justifyContent: 'space-between' }}>
         Rentable Items{' '}
-        <Button secondary icon onClick={getRentableCollectibles}>
-          <Icon name="refresh" />
-        </Button>
+        <Popup
+          content="Refresh"
+          trigger={
+            <Button secondary icon onClick={getRentableCollectibles}>
+              <Icon name="refresh" />
+            </Button>
+          }
+        ></Popup>
       </h2>
       <Grid columns={4} stretched>
         {rentableCollectibles.map(collectible => {
