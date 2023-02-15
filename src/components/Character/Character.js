@@ -24,7 +24,10 @@ export default function Character() {
       currentAccount.address
     )
 
-    if (result.isEmpty) return
+    if (result.isEmpty) {
+      setEquippedCollectibles([])
+      return
+    }
 
     setEquippedCollectibles(result.toJSON())
   }
@@ -53,7 +56,7 @@ export default function Character() {
   }, [currentAccount, blockNumber])
 
   // Continuously update the block number.
-  // Block numer is used to keep everything else up to date
+  // Block number is used to keep everything else up to date
   useEffect(() => {
     let unsubscribeAll = null
 

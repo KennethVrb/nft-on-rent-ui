@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Button, Form, Header, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Image, Modal } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
+import { getImage } from '../../utils'
 
 export default function ToggleRentable({
   collectible,
@@ -102,7 +103,13 @@ export default function ToggleRentable({
           <Modal.Header>Make Rentable</Modal.Header>
           <Modal.Content>
             <Modal.Description>
-              <Header>{collectible.uniqueId}</Header>
+              <Header>
+                <Image
+                  src={require(`../../assets/items/${getImage(
+                    collectible.uniqueId
+                  )}`)}
+                ></Image>
+              </Header>
 
               <Form.Input
                 fluid

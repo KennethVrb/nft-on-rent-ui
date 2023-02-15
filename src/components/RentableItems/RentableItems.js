@@ -5,11 +5,7 @@ import { createRandomId } from '../../utils'
 import Item from '../Item'
 import RentableItem from './RentableItem'
 
-export default function RentableItems({
-  blockNumber,
-  getCollectibles,
-  getSignInfo,
-}) {
+export default function RentableItems({ getCollectibles, getSignInfo }) {
   const { api, currentAccount } = useSubstrateState()
   const [rentableCollectibles, setRentableCollectibles] = useState([])
 
@@ -24,10 +20,10 @@ export default function RentableItems({
           return collectible.toJSON()
         })
       )
+
       rentableCollectibles = rentableCollectibles.filter(
         collectible =>
-          collectible.lessor !== currentAccount.address &&
-          collectible.lessee !== currentAccount.address
+          collectible.lessor !== currentAccount.address && !collectible.lessee
       )
       const emptyItemCount = 4 - rentableCollectibles.length
       for (let i = 0; i < emptyItemCount; i++) {

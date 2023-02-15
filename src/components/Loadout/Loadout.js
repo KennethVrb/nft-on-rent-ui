@@ -1,4 +1,5 @@
 import { Button, Grid, Icon, Image, Popup } from 'semantic-ui-react'
+import { useSubstrateState } from '../../substrate-lib'
 import { getImage } from '../../utils'
 import Item from '../Item'
 import EquippedItem from './EquippedItem'
@@ -9,6 +10,7 @@ export default function Loadout({
   getEquippedCollectibles,
   getSignInfo,
 }) {
+  const { currentAccount } = useSubstrateState()
   const getItemForType = type => {
     const collectibleId = equippedCollectibles.find(collectible => {
       const image = getImage(collectible)
@@ -23,7 +25,8 @@ export default function Loadout({
   return (
     <Grid.Column width={16}>
       <h2 style={{ display: 'flex', justifyContent: 'space-between' }}>
-        Loadout{' '}
+        <span>Loadout</span>
+        <span>{!!currentAccount && currentAccount.meta.name}</span>
         <div>
           <Popup
             content="Trigger"
