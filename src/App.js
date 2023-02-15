@@ -12,7 +12,7 @@ import 'semantic-ui-css/semantic.min.css'
 import { SubstrateContextProvider, useSubstrateState } from './substrate-lib'
 import { DeveloperConsole } from './substrate-lib/components'
 
-import { AccountSelector, BlockNumber, Character } from './components'
+import { AccountSelector, BlockNumber, Character, Events } from './components'
 
 function Main() {
   const { apiState, apiError, keyringState } = useSubstrateState()
@@ -63,6 +63,9 @@ function Main() {
             <Grid.Column width={16}>
               <Character />
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Events></Events>
           </Grid.Row>
         </Grid>
       </Container>
