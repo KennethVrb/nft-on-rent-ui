@@ -3,7 +3,7 @@ import { Button, Icon, Popup } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 
 export default function Unequip({
-  collectible,
+  collectibleId,
   getCollectibles,
   getEquippedCollectibles,
   getSignInfo,
@@ -15,7 +15,7 @@ export default function Unequip({
     setLoading(true)
     const signInfo = await getSignInfo()
     api.tx.palletRent
-      .unequipCollectible(collectible.uniqueId)
+      .unequipCollectible(collectibleId)
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
           getCollectibles()

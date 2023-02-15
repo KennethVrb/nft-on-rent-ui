@@ -1,5 +1,5 @@
 import { Button, Grid, Icon, Image, Popup } from 'semantic-ui-react'
-import { createRandomId } from '../../utils'
+import { getImage } from '../../utils'
 import Item from '../Item'
 import EquippedItem from './EquippedItem'
 
@@ -9,23 +9,17 @@ export default function Loadout({
   getEquippedCollectibles,
   getSignInfo,
 }) {
-  const getItems = () => {
-    const items = equippedCollectibles.map(collectible => {
-      return {
-        uniqueId: collectible,
-        isPlaceholder: false,
-      }
+  const getItemForType = type => {
+    const collectibleId = equippedCollectibles.find(collectible => {
+      const image = getImage(collectible)
+      return image.includes(type)
     })
-    const emptyItemCount = 4 - items.length
-    for (let i = 0; i < emptyItemCount; i++) {
-      items.push({
-        uniqueId: createRandomId(),
-        isPlaceholder: true,
-      })
+    if (collectibleId) {
+      return collectibleId
     }
-
-    return items
+    return null
   }
+
   return (
     <Grid.Column width={16}>
       <h2 style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -44,36 +38,98 @@ export default function Loadout({
       <Grid columns={5} centered stretched>
         <Grid.Column style={{ width: '130px' }}>
           <Grid columns={1} stretched>
-            {getItems().map(collectible => {
-              return (
-                <Grid.Column
-                  key={collectible.uniqueId}
-                  style={{ height: '130px !important' }}
-                >
-                  {collectible.isPlaceholder ? (
-                    <Item
-                      style={{
-                        width: '100px',
-                        height: '100px',
-                        minHeight: '100px',
-                      }}
-                    ></Item>
-                  ) : (
-                    <EquippedItem
-                      style={{
-                        width: '100px',
-                        height: '100px',
-                        minHeight: '100px',
-                      }}
-                      collectible={collectible}
-                      getCollectibles={getCollectibes}
-                      getEquippedCollectibles={getEquippedCollectibles}
-                      getSignInfo={getSignInfo}
-                    ></EquippedItem>
-                  )}
-                </Grid.Column>
-              )
-            })}
+            <Grid.Column>
+              {getItemForType('helmet') ? (
+                <EquippedItem
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                  collectibleId={getItemForType('helmet')}
+                  getCollectibles={getCollectibes}
+                  getEquippedCollectibles={getEquippedCollectibles}
+                  getSignInfo={getSignInfo}
+                ></EquippedItem>
+              ) : (
+                <Item
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                ></Item>
+              )}
+            </Grid.Column>
+            <Grid.Column>
+              {getItemForType('chestplate') ? (
+                <EquippedItem
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                  collectibleId={getItemForType('chestplate')}
+                  getCollectibles={getCollectibes}
+                  getEquippedCollectibles={getEquippedCollectibles}
+                  getSignInfo={getSignInfo}
+                ></EquippedItem>
+              ) : (
+                <Item
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                ></Item>
+              )}
+            </Grid.Column>
+            <Grid.Column>
+              {getItemForType('leggings') ? (
+                <EquippedItem
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                  collectibleId={getItemForType('leggings')}
+                  getCollectibles={getCollectibes}
+                  getEquippedCollectibles={getEquippedCollectibles}
+                  getSignInfo={getSignInfo}
+                ></EquippedItem>
+              ) : (
+                <Item
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                ></Item>
+              )}
+            </Grid.Column>
+            <Grid.Column>
+              {getItemForType('boots') ? (
+                <EquippedItem
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                  collectibleId={getItemForType('boots')}
+                  getCollectibles={getCollectibes}
+                  getEquippedCollectibles={getEquippedCollectibles}
+                  getSignInfo={getSignInfo}
+                ></EquippedItem>
+              ) : (
+                <Item
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                ></Item>
+              )}
+            </Grid.Column>
           </Grid>
         </Grid.Column>
         <Grid.Column style={{ width: '300px' }}>
@@ -82,23 +138,51 @@ export default function Loadout({
         <Grid.Column style={{ width: '130px' }}>
           <Grid columns={1} stretched>
             <Grid.Column style={{ height: '130px' }}></Grid.Column>
-            <Grid.Column style={{ height: '130px' }}>
-              <Item
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  minHeight: '100px',
-                }}
-              ></Item>
+            <Grid.Column>
+              {getItemForType('weapon') ? (
+                <EquippedItem
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                  collectibleId={getItemForType('weapon')}
+                  getCollectibles={getCollectibes}
+                  getEquippedCollectibles={getEquippedCollectibles}
+                  getSignInfo={getSignInfo}
+                ></EquippedItem>
+              ) : (
+                <Item
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                ></Item>
+              )}
             </Grid.Column>
-            <Grid.Column style={{ height: '130px' }}>
-              <Item
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  minHeight: '100px',
-                }}
-              ></Item>
+            <Grid.Column>
+              {getItemForType('shield') ? (
+                <EquippedItem
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                  collectibleId={getItemForType('shield')}
+                  getCollectibles={getCollectibes}
+                  getEquippedCollectibles={getEquippedCollectibles}
+                  getSignInfo={getSignInfo}
+                ></EquippedItem>
+              ) : (
+                <Item
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    minHeight: '100px',
+                  }}
+                ></Item>
+              )}
             </Grid.Column>
             <Grid.Column style={{ height: '130px' }}></Grid.Column>
           </Grid>
