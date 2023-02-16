@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Button, Icon, Popup } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
+import { LoaderContext } from '../contexts'
 
 export default function DeleteItem({
   collectible,
@@ -8,11 +9,10 @@ export default function DeleteItem({
   getSignInfo,
 }) {
   const { api } = useSubstrateState()
-
-  const [deleting, setDeleting] = useState(false)
+  const { showLoader, hideLoader } = useContext(LoaderContext)
 
   const onDeleteItem = async () => {
-    setDeleting(true)
+    showLoader('Deleting item...')
 
     const signInfo = await getSignInfo()
 
@@ -20,13 +20,13 @@ export default function DeleteItem({
       .burn(collectible.uniqueId)
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
-          setDeleting(false)
+          hideLoader(false)
           getCollectibles()
         }
       })
       .catch(e => {
         console.log(e)
-        setDeleting(false)
+        hideLoader()
       })
   }
 
@@ -34,14 +34,7 @@ export default function DeleteItem({
     <Popup
       content="Delete"
       trigger={
-        <Button
-          disabled={deleting}
-          loading={deleting}
-          color="red"
-          size="mini"
-          icon
-          onClick={onDeleteItem}
-        >
+        <Button color="red" size="mini" icon onClick={onDeleteItem}>
           <Icon name="trash" />
         </Button>
       }

@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
+import { LoaderContext } from '../contexts'
 
 export default function ToggleRecurring({
   collectible,
@@ -8,36 +9,35 @@ export default function ToggleRecurring({
   getSignInfo,
 }) {
   const { api } = useSubstrateState()
-  const [loading, setLoading] = useState(false)
+  const { showLoader, hideLoader } = useContext(LoaderContext)
 
   const onSetRecurring = async recurring => {
-    setLoading(true)
+    showLoader('Setting recurring...')
     const signInfo = await getSignInfo()
 
     api.tx.palletRent
       .setRecurring(collectible.uniqueId, recurring)
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
-          setLoading(false)
+          hideLoader()
           getCollectibles()
         }
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        console.log(e)
+        hideLoader()
+      })
   }
 
   return (
     <Button.Group size="mini">
       <Button
-        loading={!collectible.recurring && loading}
-        disabled={loading}
         color={collectible.recurring ? 'green' : 'grey'}
         onClick={() => onSetRecurring(true)}
       >
         Yes
       </Button>
       <Button
-        loading={collectible.recurring && loading}
-        disabled={loading}
         color={!collectible.recurring ? 'red' : 'grey'}
         onClick={() => onSetRecurring(false)}
       >

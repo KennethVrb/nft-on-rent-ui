@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Button, Form, Header, Image, Modal } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 import { getImage } from '../../utils'
+import { LoaderContext } from '../contexts'
 
 export default function ToggleRentable({
   collectible,
@@ -13,6 +14,7 @@ export default function ToggleRentable({
   const [pricePerBlock, setPricePerBlock] = useState(1)
   const [minimumRentalPeriod, setMinimumRentalPeriod] = useState(1)
   const [maximumRentalPeriod, setMaximumRentalPeriod] = useState(1)
+  const { showLoader, hideLoader } = useContext(LoaderContext)
   const [loading, setLoading] = useState(false)
 
   const resetForm = () => {
@@ -48,11 +50,15 @@ export default function ToggleRentable({
           resetForm()
         }
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        console.log(e)
+        setLoading(false)
+        setOpen(false)
+      })
   }
 
   const onSetUnrentable = async () => {
-    setLoading(true)
+    showLoader('Setting item as unrentable...')
 
     const signInfo = await getSignInfo()
 
@@ -60,18 +66,20 @@ export default function ToggleRentable({
       .setUnrentable(collectible.uniqueId)
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
-          setLoading(false)
+          hideLoader()
           getCollectibles()
         }
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        console.log(e)
+        hideLoader()
+      })
   }
 
   return (
     <>
       {collectible.rentable ? (
         <Button
-          loading={loading}
           color="red"
           style={{ marginTop: '0.5rem' }}
           onClick={() => onSetUnrentable()}

@@ -42,7 +42,11 @@ export default function Rent({
           resetForm()
         }
       })
-      .catch(e => console.log(e))
+      .catch(e => {
+        console.log(e)
+        setLoading(false)
+        setOpen(false)
+      })
   }
 
   return (

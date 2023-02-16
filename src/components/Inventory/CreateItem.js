@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
+import { LoaderContext } from '../contexts'
 
 export default function CreateItem({ getCollectibles, getSignInfo }) {
   const { api } = useSubstrateState()
 
-  const [creating, setCreating] = useState(false)
+  const { showLoader, hideLoader } = useContext(LoaderContext)
 
   const onCreateItem = async () => {
-    setCreating(true)
+    showLoader('Creating item...')
 
     const signInfo = await getSignInfo()
 
@@ -16,23 +17,18 @@ export default function CreateItem({ getCollectibles, getSignInfo }) {
       .mint()
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
-          setCreating(false)
           getCollectibles()
+          hideLoader(null)
         }
       })
       .catch(e => {
         console.log(e)
-        setCreating(false)
+        hideLoader(null)
       })
   }
 
   return (
-    <Button
-      primary
-      disabled={creating}
-      loading={creating}
-      onClick={onCreateItem}
-    >
+    <Button primary onClick={onCreateItem}>
       Create Item
     </Button>
   )

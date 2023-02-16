@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
 import { getImage } from '../../utils'
+import { LoaderContext } from '../contexts'
 
 export default function EquipItem({
   collectible,
@@ -13,11 +14,11 @@ export default function EquipItem({
 }) {
   const { api } = useSubstrateState()
 
-  const [loading, setLoading] = useState(false)
   const [equipped, setEquipped] = useState(false)
+  const { showLoader, hideLoader } = useContext(LoaderContext)
 
   const onEquipItem = async () => {
-    setLoading(true)
+    showLoader('Equipping item...')
 
     const signInfo = await getSignInfo()
 
@@ -43,17 +44,17 @@ export default function EquipItem({
       .signAndSend(...signInfo, ({ status }) => {
         if (status.isInBlock) {
           getEquippedCollectibles()
-          setLoading(false)
+          hideLoader()
         }
       })
       .catch(e => {
         console.log(e)
-        setLoading(false)
+        hideLoader()
       })
   }
 
   const onUnequipItem = (uniqueId = null, useLoading = true) => {
-    useLoading && setLoading(true)
+    useLoading && showLoader('Unequipping item...')
     return new Promise((resolve, reject) => {
       getSignInfo().then(signInfo => {
         api.tx.palletRent
@@ -61,13 +62,13 @@ export default function EquipItem({
           .signAndSend(...signInfo, ({ status }) => {
             if (status.isInBlock) {
               getEquippedCollectibles()
-              useLoading && setLoading(false)
+              useLoading && hideLoader()
               resolve()
             }
           })
           .catch(e => {
             console.log(e)
-            useLoading && setLoading(false)
+            useLoading && hideLoader()
             reject()
           })
       })
@@ -82,8 +83,7 @@ export default function EquipItem({
   return (
     <Button
       color={equipped ? 'red' : 'blue'}
-      disabled={loading || isRentedOut}
-      loading={loading}
+      disabled={isRentedOut}
       onClick={() => (equipped ? onUnequipItem() : onEquipItem())}
       style={style}
     >

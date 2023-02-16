@@ -2,6 +2,7 @@ import { web3FromSource } from '@polkadot/extension-dapp'
 import { useEffect, useState } from 'react'
 import { Grid } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
+import { LoaderProvider } from '../contexts'
 import Inventory from '../Inventory'
 import Loadout from '../Loadout'
 import RentableItems from '../RentableItems'
@@ -71,39 +72,41 @@ export default function Character() {
   }, [api.derive.chain])
 
   return (
-    <div
-      style={{
-        backgroundColor: '#c6c6c6',
-        boxShadow: 'inset 0.2rem 0.2rem #fff, 0.2rem 0.2rem black',
-        padding: '10px',
-        paddingBottom: '30px',
-        border: '2px solid black',
-      }}
-    >
-      <Grid.Row>
-        <Loadout
-          equippedCollectibles={equippedCollectibles}
-          getCollectibles={getCollectibles}
-          getEquippedCollectibles={getEquippedCollectibles}
-          getSignInfo={getSignInfo}
-        ></Loadout>
-      </Grid.Row>
-      <Grid.Row style={{ marginTop: '2rem' }}>
-        <Inventory
-          collectibles={collectibles}
-          getCollectibles={getCollectibles}
-          equippedCollectibles={equippedCollectibles}
-          getEquippedCollectibles={getEquippedCollectibles}
-          getSignInfo={getSignInfo}
-        ></Inventory>
-      </Grid.Row>
-      <Grid.Row style={{ marginTop: '2rem' }}>
-        <RentableItems
-          getCollectibles={getCollectibles}
-          blockNumber={blockNumber}
-          getSignInfo={getSignInfo}
-        ></RentableItems>
-      </Grid.Row>
-    </div>
+    <LoaderProvider>
+      <div
+        style={{
+          backgroundColor: '#c6c6c6',
+          boxShadow: 'inset 0.2rem 0.2rem #fff, 0.2rem 0.2rem black',
+          padding: '10px',
+          paddingBottom: '30px',
+          border: '2px solid black',
+        }}
+      >
+        <Grid.Row>
+          <Loadout
+            equippedCollectibles={equippedCollectibles}
+            getCollectibles={getCollectibles}
+            getEquippedCollectibles={getEquippedCollectibles}
+            getSignInfo={getSignInfo}
+          ></Loadout>
+        </Grid.Row>
+        <Grid.Row style={{ marginTop: '2rem' }}>
+          <Inventory
+            collectibles={collectibles}
+            getCollectibles={getCollectibles}
+            equippedCollectibles={equippedCollectibles}
+            getEquippedCollectibles={getEquippedCollectibles}
+            getSignInfo={getSignInfo}
+          ></Inventory>
+        </Grid.Row>
+        <Grid.Row style={{ marginTop: '2rem' }}>
+          <RentableItems
+            getCollectibles={getCollectibles}
+            blockNumber={blockNumber}
+            getSignInfo={getSignInfo}
+          ></RentableItems>
+        </Grid.Row>
+      </div>
+    </LoaderProvider>
   )
 }

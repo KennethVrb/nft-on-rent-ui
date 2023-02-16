@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { Button, Icon, Popup } from 'semantic-ui-react'
 import { useSubstrateState } from '../../substrate-lib'
+import { LoaderContext } from '../contexts'
 
 export default function Unequip({
   collectibleId,
@@ -9,10 +10,10 @@ export default function Unequip({
   getSignInfo,
 }) {
   const { api } = useSubstrateState()
-  const [loading, setLoading] = useState(false)
+  const { showLoader, hideLoader } = useContext(LoaderContext)
 
   const onUnequipItem = async () => {
-    setLoading(true)
+    showLoader('Unequipping item...')
     const signInfo = await getSignInfo()
     api.tx.palletRent
       .unequipCollectible(collectibleId)
@@ -20,12 +21,12 @@ export default function Unequip({
         if (status.isInBlock) {
           getCollectibles()
           getEquippedCollectibles()
-          setLoading(false)
+          hideLoader()
         }
       })
       .catch(e => {
         console.log(e)
-        setLoading(false)
+        hideLoader()
       })
   }
 
@@ -34,7 +35,6 @@ export default function Unequip({
       content="Unequip"
       trigger={
         <Button
-          loading={loading}
           onClick={onUnequipItem}
           icon
           size="mini"
