@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/hack-at-the-edge/pallet-rent-character-loadout', '-f', '.docker/Dockerfile', '.' ]
+images:
+- 'gcr.io/hack-at-the-edge/pallet-rent-character-loadout'
