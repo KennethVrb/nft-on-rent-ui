@@ -6,7 +6,7 @@ import EquippedItem from './EquippedItem'
 
 export default function Loadout({
   equippedCollectibles,
-  getCollectibes,
+  getCollectibles,
   getEquippedCollectibles,
   getSignInfo,
 }) {
@@ -50,7 +50,7 @@ export default function Loadout({
                     minHeight: '100px',
                   }}
                   collectibleId={getItemForType('helmet')}
-                  getCollectibles={getCollectibes}
+                  getCollectibles={getCollectibles}
                   getEquippedCollectibles={getEquippedCollectibles}
                   getSignInfo={getSignInfo}
                 ></EquippedItem>
@@ -73,7 +73,7 @@ export default function Loadout({
                     minHeight: '100px',
                   }}
                   collectibleId={getItemForType('chestplate')}
-                  getCollectibles={getCollectibes}
+                  getCollectibles={getCollectibles}
                   getEquippedCollectibles={getEquippedCollectibles}
                   getSignInfo={getSignInfo}
                 ></EquippedItem>
@@ -96,7 +96,7 @@ export default function Loadout({
                     minHeight: '100px',
                   }}
                   collectibleId={getItemForType('leggings')}
-                  getCollectibles={getCollectibes}
+                  getCollectibles={getCollectibles}
                   getEquippedCollectibles={getEquippedCollectibles}
                   getSignInfo={getSignInfo}
                 ></EquippedItem>
@@ -119,7 +119,7 @@ export default function Loadout({
                     minHeight: '100px',
                   }}
                   collectibleId={getItemForType('boots')}
-                  getCollectibles={getCollectibes}
+                  getCollectibles={getCollectibles}
                   getEquippedCollectibles={getEquippedCollectibles}
                   getSignInfo={getSignInfo}
                 ></EquippedItem>
@@ -150,7 +150,7 @@ export default function Loadout({
                     minHeight: '100px',
                   }}
                   collectibleId={getItemForType('weapon')}
-                  getCollectibles={getCollectibes}
+                  getCollectibles={getCollectibles}
                   getEquippedCollectibles={getEquippedCollectibles}
                   getSignInfo={getSignInfo}
                 ></EquippedItem>
@@ -173,7 +173,7 @@ export default function Loadout({
                     minHeight: '100px',
                   }}
                   collectibleId={getItemForType('shield')}
-                  getCollectibles={getCollectibes}
+                  getCollectibles={getCollectibles}
                   getEquippedCollectibles={getEquippedCollectibles}
                   getSignInfo={getSignInfo}
                 ></EquippedItem>

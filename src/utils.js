@@ -25,7 +25,7 @@ export function getImage(uniqueId) {
   } else {
     // Otherwise, pick a random unused image from the unused images
     randomImage =
-      imagesInAssets[Math.floor(Math.random() * unusedImages.length)]
+      imagesInAssets[Math.floor(Math.random() * imagesInAssets.length)]
   }
   storedImages[uniqueId] = randomImage
   localStorage.setItem('nft_map', JSON.stringify(storedImages))

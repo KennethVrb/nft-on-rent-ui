@@ -84,7 +84,7 @@ export default function EquipItem({
       color={equipped ? 'red' : 'blue'}
       disabled={loading || isRentedOut}
       loading={loading}
-      onClick={equipped ? onUnequipItem : onEquipItem}
+      onClick={() => (equipped ? onUnequipItem() : onEquipItem())}
       style={style}
     >
       {equipped ? 'Unequip' : 'Equip'}
