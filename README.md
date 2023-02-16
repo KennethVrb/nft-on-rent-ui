@@ -46,6 +46,20 @@ yarn build
 
 and open `build/index.html` in your favorite browser.
 
+### Run the project through a docker container
+
+Build container:
+
+```
+docker build -t pallet-rent-character-loadout -f .docker/Dockerfile .
+```
+
+Run container exposing its port 80 to local port 8000 (change to your liking)
+
+```
+docker run -d -p 8000:80 pallet-rent-character-loadout
+```
+
 ## Configuration
 
 The template's configuration is stored in the `src/config` directory, with

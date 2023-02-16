@@ -1,13 +1,9 @@
 {
-  "name": "substrate-front-end-template",
+  "name": "pallet-rent-character-loadout",
   "version": "monthly-2022-01",
   "private": true,
-  "author": "Parity Technologies <admin@parity.io>",
+  "author": "Kenneth Verbeure <kennethverbeure@gmail.com>",
   "license": "Unlicense",
-  "homepage": "https://substrate-developer-hub.github.io/substrate-front-end-template",
-  "bugs": {
-    "url": "https://github.com/substrate-developer-hub/substrate-front-end-template/issues"
-  },
   "keywords": [
     "substrate",
     "substrate-ui",
