@@ -2,6 +2,8 @@ FROM node:lts-alpine as builder
 
 RUN apk --no-cache add git
 
+RUN apk --no-cache add python3 make g++
+
 COPY ./package.json ./
 RUN yarn install
 RUN mkdir /app-ui
@@ -23,4 +25,4 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app-ui/build /usr/share/nginx/html
 EXPOSE 80
 
-CMD nginx -g 'daemon off;'
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
