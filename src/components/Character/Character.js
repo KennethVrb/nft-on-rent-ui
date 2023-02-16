@@ -15,7 +15,10 @@ export default function Character() {
 
   const getCollectibles = async () => {
     const result = await api.query.palletRent.collectibles.entries()
-    if (result.isEmpty) return
+    if (result.isEmpty) {
+      setCollectibles([])
+      return
+    }
     const collectibles = result.map(result => result[1].toJSON())
     setCollectibles(collectibles)
   }
